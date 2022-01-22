@@ -78,9 +78,11 @@ public class LoginDialog extends JFrame {
 
     public static void main(String[] args) {
         LoginDialog dialog = new LoginDialog();
+        dialog.setTitle("Login");
         dialog.setContentPane(dialog.contentPane);
         dialog.setPreferredSize(new Dimension(500,200));
         dialog.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         dialog.pack();
         dialog.setVisible(true);
         //System.exit(0);

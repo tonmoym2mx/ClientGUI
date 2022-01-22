@@ -42,11 +42,6 @@ public class ServerConnector {
                         Data data = new Data(Type.JOIN_REQUEST,username);
                         dataOutputStream.writeUTF(data.getJsonString());
 
-                        Gson gson = new Gson();
-                        Data data1 = gson.fromJson(dataInputStream.readUTF(),Data.class);
-
-                        System.out.println(data1.getClientList());
-
                         if(connectionListener!=null){
                             connectionListener.connected();
                         }
@@ -74,6 +69,17 @@ public class ServerConnector {
             e.printStackTrace();
         }
     }
+    public void close(){
+        try {
+            dataOutputStream.close();
+            dataInputStream.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
     public void readingMessage(){
        readingThread = new Thread(new Runnable() {
                   @Override
@@ -84,7 +90,14 @@ public class ServerConnector {
                               Gson gson = new Gson();
                               Data readData = gson.fromJson(message, Data.class);
                               if (serverConnectorListener != null) {
-                                  serverConnectorListener.onMessageReceived(readData);
+
+                                  if(readData.getType() == Type.USER_LIST_REQUEST ){
+                                      serverConnectorListener.userListUpdate(readData.getClientList());
+                                  }else {
+                                      serverConnectorListener.onMessageReceived(readData);
+                                  }
+
+
                               }
                           }
                       } catch (IOException e) {
@@ -98,6 +111,10 @@ public class ServerConnector {
 
     public boolean isConnected() {
         return isConnected;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void setServerConnectorListener(ServerConnectorListener serverConnectorListener) {

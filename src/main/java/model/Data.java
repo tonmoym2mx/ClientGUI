@@ -8,7 +8,7 @@ public class Data {
     private String toClient;
     private String fromClient;
     private List<String> clientList;
-    private Type type;
+    private Type type = Type.MESSAGE;
 
     public Data(String message, String toClient, String fromClient) {
         this.message = message;
