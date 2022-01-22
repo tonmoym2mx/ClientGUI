@@ -1,3 +1,6 @@
+import client.ConnectionListener;
+import client.ServerConnector;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -19,9 +22,29 @@ public class LoginDialog extends JFrame {
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                MainLayout mainLayout = new MainLayout();
-                mainLayout.open();
-                onCancel();
+
+                String host = a19216801TextField.getText();
+                int port = Integer.parseInt(a5555TextField.getText());
+                String username = textField3.getText();
+                ServerConnector serverConnector = new ServerConnector(host,port,username);
+
+                serverConnector.connect(new ConnectionListener() {
+                    @Override
+                    public void connected() {
+                        MainLayout mainLayout = new MainLayout();
+                        mainLayout.setServerConnector(serverConnector);
+                        mainLayout.open();
+                        onCancel();
+                    }
+
+                    @Override
+                    public void connectionFailed(String message) {
+                        System.out.println(message);
+                    }
+                });
+
+
+
             }
         });
 

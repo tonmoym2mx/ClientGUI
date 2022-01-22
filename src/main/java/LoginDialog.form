@@ -64,7 +64,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="192.168.0.1"/>
+              <text value="localhost"/>
             </properties>
           </component>
           <component id="e3578" class="javax.swing.JLabel">
